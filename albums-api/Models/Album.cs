@@ -1,18 +1,27 @@
-﻿namespace albums_api.Models
+﻿// Album.cs
+// Defines the Album record and provides static album data.
+
+namespace albums_api.Models
 {
+    /// <summary>
+    /// Represents a music album.
+    /// </summary>
     public record Album(int Id, string Title, string Artist, int Year, double Price, string Image_url)
     {
+        /// <summary>
+        /// Returns a static list of albums.
+        /// </summary>
         public static List<Album> GetAll()
         {
             var albums = new List<Album>(){
-            new Album(1, "You, Me and an App Id", "Daprize", 2020, 10.99, "https://aka.ms/albums-daprlogo"),
-            new Album(2, "Seven Revision Army", "The Blue-Green Stripes", 2021, 13.99, "https://aka.ms/albums-containerappslogo"),
-            new Album(3, "Scale It Up", "KEDA Club", 2022, 13.99, "https://aka.ms/albums-kedalogo"),
-            new Album(4, "Lost in Translation", "MegaDNS", 2020, 12.99,"https://aka.ms/albums-envoylogo"),
-            new Album(5, "Lock Down Your Love", "V is for VNET", 2021, 12.99, "https://aka.ms/albums-vnetlogo"),
-            new Album(6, "Sweet Container O' Mine", "Guns N Probeses", 2022, 14.99, "https://aka.ms/albums-containerappslogo")
-         };
-
+                // Example album data
+                new Album(1, "You, Me and an App Id", "Daprize", 2020, 10.99, "https://aka.ms/albums-daprlogo"),
+                new Album(2, "Seven Revision Army", "The Blue-Green Stripes", 2021, 13.99, "https://aka.ms/albums-containerappslogo"),
+                new Album(3, "Scale It Up", "KEDA Club", 2022, 13.99, "https://aka.ms/albums-kedalogo"),
+                new Album(4, "Lost in Translation", "MegaDNS", 2020, 12.99,"https://aka.ms/albums-envoylogo"),
+                new Album(5, "Lock Down Your Love", "V is for VNET", 2021, 12.99, "https://aka.ms/albums-vnetlogo"),
+                new Album(6, "Sweet Container O' Mine", "Guns N Probeses", 2022, 14.99, "https://aka.ms/albums-containerappslogo")
+            };
             return albums;
         }
     }

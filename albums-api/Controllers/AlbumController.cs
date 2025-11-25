@@ -1,4 +1,7 @@
-﻿using albums_api.Models;
+﻿// AlbumController.cs
+// ASP.NET Core controller for handling album API requests.
+
+using albums_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
@@ -6,13 +9,21 @@ using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 namespace albums_api.Controllers
 {
+    /// <summary>
+    /// Handles API requests for album data.
+    /// </summary>
     [Route("albums")]
     [ApiController]
     public class AlbumController : ControllerBase
     {
-        // GET: api/album
+        /// <summary>
+        /// Returns all albums.
+        /// GET /albums
+        /// </summary>
         [HttpGet]
         public IActionResult Get()
         {
@@ -20,8 +31,10 @@ namespace albums_api.Controllers
             return Ok(albums);
         }
 
-
-        // GET api/albums/5
+        /// <summary>
+        /// Returns a single album by ID.
+        /// GET /albums/{id}
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -34,7 +47,10 @@ namespace albums_api.Controllers
             return Ok(album);
         }
 
-        // GET api/albums/sort/{by}
+        /// <summary>
+        /// Returns albums sorted by price, name, or genre (artist).
+        /// GET /albums/sort/{by}
+        /// </summary>
         [HttpGet("sort/{by}")]
         public IActionResult Sort(string by)
         {
@@ -57,6 +73,5 @@ namespace albums_api.Controllers
             }
             return Ok(sorted);
         }
-
     }
 }

@@ -1,3 +1,106 @@
+# gh-copilot-demo Project Documentation
+
+## Overview
+This project is a full-stack demo application for managing and visualizing music album data. It consists of:
+- A .NET 8 Web API backend (`albums-api`) for album data
+- A Vite + Vue 3 frontend (`album-viewer`) for displaying and visualizing albums
+- Infrastructure as Code (IaC) for cloud deployment (Terraform, Bicep, Kubernetes, GitHub Actions)
+
+---
+
+## Backend: albums-api
+- **Location:** `/albums-api`
+- **Tech:** .NET 8, C#, ASP.NET Core Web API
+- **Key Files:**
+	- `Program.cs`: Main entry point for the API
+	- `Controllers/AlbumController.cs`: API endpoints for albums (CRUD, sorting)
+	- `Models/Album.cs`: Album model and static data
+- **Features:**
+	- List all albums: `GET /albums`
+	- Get album by ID: `GET /albums/{id}`
+	- Sort albums by price, name, or genre: `GET /albums/sort/{by}`
+
+---
+
+## Frontend: album-viewer
+- **Location:** `/album-viewer`
+- **Tech:** Vite, Vue 3, TypeScript, D3.js
+- **Key Files:**
+	- `src/App.vue`: Main app shell
+	- `src/components/AlbumCard.vue`: Album display component
+	- `src/utils/validators.ts`: Validation utilities (album title, artist, year, GUID, IPv6, French date parsing)
+	- `src/utils/viz.ts`: D3.js utilities for plotting album sales by month/year
+	- `src/utils/validators.test.ts`: Mocha/Chai unit tests for all validators
+- **Features:**
+	- Display albums and details
+	- Validate album data on the client
+	- Visualize album sales by month using D3.js
+	- Load sales data from external JSON
+
+---
+
+## Infrastructure as Code (IaC)
+- **Location:** `/iac`
+- **Tech:** Terraform, Bicep, Kubernetes YAML
+- **Key Files:**
+	- `iac/bicep/main.bicep`: Azure resources (e.g., ACR, AKS)
+	- `iac/terraform/apps.tf`: Terraform for cloud resources
+	- `iac/bicep/modules/`: Bicep modules for container app, Dapr statestore
+	- `iac/terraform/`: Terraform modules
+- **Features:**
+	- Provision Azure Container Registry (ACR)
+	- Provision Azure Kubernetes Service (AKS)
+	- Deploy backend and frontend containers
+
+---
+
+## CI/CD: GitHub Actions
+- **Location:** `.github/workflows/workflow.yml`
+- **Features:**
+	- On push to `main`:
+		- Build and push Docker image for `albums-api` to ACR and Docker Hub (tagged with run ID)
+		- Run tests on the built Docker image
+		- Deploy the image to the dev AKS cluster
+	- Uses repository secrets for credentials and configuration
+
+---
+
+## Testing
+- **Backend:** Use `dotnet test` for C# unit/integration tests (if present)
+- **Frontend:** Run `npm test` or `npx mocha` in `album-viewer` for validator tests
+- **Validation:** All validators are covered with unit tests for edge cases
+
+---
+
+## How to Run Locally
+1. **Backend:**
+	 - `cd albums-api`
+	 - `dotnet run`
+2. **Frontend:**
+	 - `cd album-viewer`
+	 - `npm install`
+	 - `npm run dev`
+3. **Tests:**
+	 - `cd album-viewer`
+	 - `npm test` (or `npx mocha`)
+
+---
+
+## Deployment
+- Use the provided IaC (Terraform/Bicep) to provision Azure resources
+- Use the GitHub Actions workflow for automated build, test, and deployment
+- Ensure all required secrets are set in the GitHub repository
+
+---
+
+## Notes
+- All code is TypeScript or C# with type safety and validation
+- D3.js is used for interactive data visualization
+- The project is modular and ready for extension (add more endpoints, visualizations, etc.)
+
+---
+
+For more details, see the code comments and each folder's README (if present).
 # Github Copilot demo 
 
 ## Demo Scenarios

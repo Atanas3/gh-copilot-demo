@@ -1,9 +1,15 @@
+// viz.ts
+// D3.js utilities for plotting album sales data.
 // album-viewer/src/utils/viz.ts
 // D3.js plot: Selling price of the album by year, x-axis: months, y-axis: albums sold
 // Data is loaded from an external JSON source
 
 import * as d3 from 'd3';
 
+/**
+ * AlbumSale interface
+ * Represents a single album sale record.
+ */
 export interface AlbumSale {
   album: string;
   year: number;
@@ -17,6 +23,12 @@ export interface AlbumSale {
  * @param containerId The DOM element id to render the plot into
  * @param data Array of AlbumSale objects
  * @param year The year to filter and plot
+ */
+/**
+ * Renders a bar chart of albums sold by month for a given year.
+ * @param containerId The DOM element id to render the plot into.
+ * @param data Array of AlbumSale objects.
+ * @param year The year to filter and plot.
  */
 export function renderAlbumSalesPlot(containerId: string, data: AlbumSale[], year: number) {
   // Filter data for the selected year
@@ -102,6 +114,11 @@ export function renderAlbumSalesPlot(containerId: string, data: AlbumSale[], yea
 /**
  * Load album sales data from a JSON URL.
  * @param url The URL to fetch the JSON data from
+ */
+/**
+ * Loads album sales data from a JSON URL.
+ * @param url The URL to fetch the JSON data from.
+ * @returns Promise resolving to an array of AlbumSale objects.
  */
 export async function loadAlbumSalesData(url: string): Promise<AlbumSale[]> {
   const response = await fetch(url);
