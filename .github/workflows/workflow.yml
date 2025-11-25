@@ -1,0 +1,60 @@
+# GitHub Actions workflow to build and push album-api Docker image to Azure Container Registry
+name: Build and Push album-api Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push album-api image to ACR and Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./albums-api
+          file: ./albums-api/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ACR_LOGIN_SERVER }}/album-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/album-api:${{ github.run_id }}
+
+      - name: Run tests on album-api image
+        run: |
+          docker run --rm ${{ secrets.ACR_LOGIN_SERVER }}/album-api:latest dotnet test /app/albums-api.csproj
+
+      - name: Set up Azure CLI
+        uses: azure/cli@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AKS context
+        run: az aks get-credentials --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
+
+      - name: Deploy album-api to dev AKS
+        run: |
+          kubectl set image deployment/album-api album-api=${{ secrets.ACR_LOGIN_SERVER }}/album-api:latest --namespace=dev
+          kubectl rollout status deployment/album-api --namespace=dev

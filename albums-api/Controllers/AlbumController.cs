@@ -17,15 +17,45 @@ namespace albums_api.Controllers
         public IActionResult Get()
         {
             var albums = Album.GetAll();
-
             return Ok(albums);
         }
 
-        // GET api/<AlbumController>/5
+
+        // GET api/albums/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok();
+            var albums = Album.GetAll();
+            var album = albums.FirstOrDefault(a => a.Id == id);
+            if (album == null)
+            {
+                return NotFound();
+            }
+            return Ok(album);
+        }
+
+        // GET api/albums/sort/{by}
+        [HttpGet("sort/{by}")]
+        public IActionResult Sort(string by)
+        {
+            var albums = Album.GetAll();
+            List<Album> sorted;
+            switch (by.ToLower())
+            {
+                case "price":
+                    sorted = albums.OrderBy(a => a.Price).ToList();
+                    break;
+                case "name":
+                    sorted = albums.OrderBy(a => a.Title).ToList();
+                    break;
+                case "genre":
+                    // No genre property, so sort by Artist as a placeholder
+                    sorted = albums.OrderBy(a => a.Artist).ToList();
+                    break;
+                default:
+                    return BadRequest("Invalid sort key. Use 'price', 'name', or 'genre'.");
+            }
+            return Ok(sorted);
         }
 
     }
